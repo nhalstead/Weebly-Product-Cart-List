@@ -170,7 +170,7 @@ function iarray(){
 
 // Print Records
 	echo "<br>";
-	echo "<table>";
+	echo "<table style='font-family: monospace; font-size:14px;'>";
 	echo "<style> .c { text-align: center; }</style>";
 	echo "<tr><td style='width:400px;border-bottom: 1px solid black;'>Product Name</td><td style='width:80px;border-bottom: 1px solid black;'>Product Id</td><td style='width:80px;border-bottom: 1px solid black;'>Qty</td></tr>";
 		foreach($records as $name => $r){
