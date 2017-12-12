@@ -3,12 +3,13 @@ $file = "orders-[SHOP_NAME]-weebly-com-[START]-[END].csv";
 
 date_default_timezone_set("EST");
 $explain = true;
-$catch = array("DATE", "ORDER #", "PRODUCT NAME", "PRODUCT ID", "PRODUCT SKU", "PRODUCT QUANTITY", "PRODUCT PRICE");
+$catch = array("DATE", "ORDER #", "PRODUCT NAME", "PRODUCT ID", "PRODUCT SKU", "PRODUCT QUANTITY", "PRODUCT PRICE", "STATUS");
 $catchIndex = array();
 $catchNUM = array();
 $list = array();
 $row = 1;
 $empty = 0;
+$cancelled = 0;
 $Tnum = 0;
 define("DATE", "F j, Y @ g:i A");
 
@@ -98,7 +99,10 @@ function iarray(){
 			}
 			else {
 				$h = iarray();
-				if( !empty( $data[ $h['PRODUCT ID'] ] ) ){
+				if( $data[$h['STATUS']] == "cancelled" ){
+					$cancelled++;
+				}
+				else if( !empty( $data[ $h['PRODUCT ID'] ] ) ){
 					// $list[ $data[$h['PRODUCT ID']] ] = array(
 						// "Product" => $data[$h['PRODUCT NAME']],
 						// "Product Id" => $data[$h['PRODUCT ID']],
@@ -156,6 +160,7 @@ function iarray(){
 		"<small>Date of Index Creation:</small>" => "<small>".date(DATE)."</small>",
 		"<small>File Creation Time:</small>" => "<small>".date(DATE, filectime($file))." (". time_elapsed_string('@'.filectime($file)) .")</small>",
 		"<small>File Hash:</small>" => "<small>".md5_file($file)."</small>",
+		"<small>Cancelled Orders:</small>" => "<small>".$cancelled."</small>",
 		"<small>Total Read Calls:</small>" => "<small>".$Tnum."</small>",
 	);
 	echo "<table style='font-size:15px;'>";
@@ -172,7 +177,7 @@ function iarray(){
 	echo "<br>";
 	echo "<table style='font-family: monospace; font-size:14px;'>";
 	echo "<style> .c { text-align: center; }</style>";
-	echo "<tr><td style='width:400px;border-bottom: 1px solid black;'>Product Name</td><td style='width:80px;border-bottom: 1px solid black;'>Product Id</td><td style='width:80px;border-bottom: 1px solid black;'>Qty</td></tr>";
+	echo "<tr><td style='width:400px;border-bottom: 1px solid black;'>Product Name</td><td style='width:80px;border-bottom: 1px solid black;'>Product Id</td><td style='width:80px;border-bottom: 1px solid black;'>&nbsp;&nbsp;&nbsp;Qty</td></tr>";
 		foreach($records as $name => $r){
 			if($r['SKU']){
 				$e = "(".$r['SKU'].")";
